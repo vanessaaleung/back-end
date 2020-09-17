@@ -1,4 +1,6 @@
 # Test Driven Development of a Django RESTful API
+_Creates a Django puppies app with a RESTful API_
+
 1. [Django Project Setup](#django-project-setup)
 2. [Django App and REST Framework Setup](#django-app-and-rest-framework-setup)
 3. [Database and Model Setup](#database-and-model-setup)
@@ -196,6 +198,7 @@ from .serializers import PuppySerializer
 
 # @api_view: taks a list of HTTP methods the view should respond to, allows to c
 onfigure how the request is processed
+@api_view(['GET', 'DELETE', 'PUT'])
 def get_delete_update_puppy(request, pk):
     try:
         puppy = Puppy.objects.get(pk=pk)
@@ -204,21 +207,41 @@ def get_delete_update_puppy(request, pk):
 
     # get details of a single puppy
     if request.method == 'GET':
-        return Response({})
+        serializer = PuppySerializer(puppy)
+        return Response(serializer.data)
+
+    # update details of a single puppy
+    if request.method == 'PUT':
+        serializer = PuppySerializer(puppy, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_204_NO_CONTENT)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
     # delete a single puppy
     elif request.method == 'DELETE':
-        return Response({})
-    elif request.method == 'PUT':
         return Response({})
 
 @api_view(['GET', 'POST'])
 def get_post_puppies(request):
     # get all puppies
     if request.method == 'GET':
-        return Response({})
+        puppies = Puppy.objects.all()
+        serializer = PuppySerializer(puppies, many=True)
+        return Response(serializer.data)
     # insert a new record for a puppy
-    elif request.method == 'POST':
-        return Response({})
+    if request.method == 'POST':
+        data = {
+            'name': request.data.get('name'),
+            'age': int(request.data.get('age')),
+            'breed': request.data.get('breed'),
+            'color': request.data.get('color')
+        }
+        serializer = PuppySerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 ```
 
 ### Create URLs
@@ -295,4 +318,89 @@ _Generate human-friendly HTML output for each resource_
         self.assertEqual(response.data, serializer.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
     ```
+- Test inserting a new record
+    ```python
+    class CreateNewPuppyTest(TestCase):
+    """ Test module for inserting a new puppy """
 
+    def setUp(self):
+        self.valid_payload = {
+            'name': 'Muffin',
+            'age': 4,
+            'breed': 'Pamerion',
+            'color': 'White'
+        }
+        self.invalid_payload = {
+            'name': '',
+            'age': 4,
+            'breed': 'Pamerion',
+            'color': 'White'
+        }
+
+    def test_create_valid_puppy(self):
+        response = client.post(
+            reverse('get_post_puppies'),
+            data=json.dumps(self.valid_payload),
+            content_type='application/json'
+        )
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+    def test_create_invalid_puppy(self):
+        response = client.post(
+            reverse('get_post_puppies'),
+            data=json.dumps(self.invalid_payload),
+            content_type='application/json'
+        )
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+    ```
+- Can also test out with the Browsable API
+    - Navigate to http://localhost:8000/api/v1/puppies/
+    - Within the POST form, submit the following
+        ```python
+        {
+            "name": "Muffin",
+            "age": 4,
+            "breed": "Pamerion",
+            "color": "White"
+        }
+        ```
+    - <img src="browsable.png" height="300px">
+- Test to update a record
+    ```python
+    class UpdateSinglePuppyTest(TestCase):
+    """ Test module for updating an existing puppy record """
+
+    def setUp(self):
+        self.casper = Puppy.objects.create(
+            name='Casper', age=3, breed='Bull Dog', color='Black')
+        self.muffin = Puppy.objects.create(
+            name='Muffy', age=1, breed='Gradane', color='Brown')
+        self.valid_payload = {
+            'name': 'Muffy',
+            'age': 2,
+            'breed': 'Labrador',
+            'color': 'Black'
+        }
+        self.invalid_payload = {
+            'name': '',
+            'age': 4,
+            'breed': 'Pamerion',
+            'color': 'White'
+        }
+
+    def test_valid_update_puppy(self):
+        response = client.put(
+            reverse('get_delete_update_puppy', kwargs={'pk': self.muffin.pk}),
+            data=json.dumps(self.valid_payload),
+            content_type='application/json'
+        )
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+
+    def test_invalid_update_puppy(self):
+        response = client.put(
+            reverse('get_delete_update_puppy', kwargs={'pk': self.muffin.pk}),
+            data=json.dumps(self.invalid_payload),
+            content_type='application/json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+    ```
+    
