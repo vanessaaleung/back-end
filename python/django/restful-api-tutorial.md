@@ -179,3 +179,91 @@ class PuppySerializer(serializers.ModelSerializer):
 |puppies|POST|CREATE|Add a single puppy|
 |puppies/:id|PUT|UPDATE|Update a single puppy|
 |puppies/:id|DELETE|DELETE|Delete a single puppy|
+
+## Routes
+### Create Views
+- Create a skeleton of all view functions that return empty responses and map them with their appropriate URLs in `django-puppy-store/puppy_store/puppies/views.py`
+```python
+from django.shortcuts import render
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import status
+from .models import Puppy
+from .serializers import PuppySerializer
+
+# @api_view: taks a list of HTTP methods the view should respond to, allows to c
+onfigure how the request is processed
+def get_delete_update_puppy(request, pk):
+    try:
+        puppy = Puppy.objects.get(pk=pk)
+    except Puppy.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    # get details of a single puppy
+    if request.method == 'GET':
+        return Response({})
+    # delete a single puppy
+    elif request.method == 'DELETE':
+        return Response({})
+    elif request.method == 'PUT':
+        return Response({})
+
+@api_view(['GET', 'POST'])
+def get_post_puppies(request):
+    # get all puppies
+    if request.method == 'GET':
+        return Response({})
+    # insert a new record for a puppy
+    elif request.method == 'POST':
+        return Response({})
+```
+
+### Create URLs
+- Create the respective URLs to match the views in `django-puppy-store/puppy_store/puppies/urls.py`:
+    ```python
+    from django.conf.urls import url
+    from . import views
+
+    urlpatterns = [
+        url(
+            r'^api/v1/puppies/(?P<pk>[0-9]+)$',
+            views.get_delete_update_puppy,
+            name='get_delete_update_puppy'
+        ),
+        url(
+            r'^api/v1/puppies/$',
+            views.get_post_puppies,
+            name='get_post_puppies'
+        )
+    ]
+    ```
+- Update `django-puppy-store/puppy_store/puppy_store/urls.py`
+    ```python
+    from django.conf.urls import include, url
+    from django.contrib import admin
+
+    urlpatterns = [
+        url(r'^', include('puppies.urls')),
+        url(
+            r'^api-auth/',
+            include('rest_framework.urls', namespace='rest_framework')
+        ),
+        url(r'^admin/', admin.site.urls),
+    ]
+    ```
+
+## Testing
+- Creating a new file, `django-puppy-store/puppy_store/puppies/tests/test_views.py` to hold all the tests for the views
+    ```python
+    import json
+    from rest_framework import status
+    from django.test import TestCase, Client
+    from django.urls import reverse
+    from ..models import Puppy
+    from ..serializers import PuppySerializer
+    ```
+- Create a new test client
+    ```python
+    # Initialize the APIClient app
+    client = Client()
+    ```
