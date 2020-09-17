@@ -12,6 +12,7 @@ _A “table of contents” of your Django-powered site_
 - The URL declarations for this Django project
 
 ## Database
+- [Link](https://realpython.com/django-migrations-a-primer/)
 - Django is designed to work with a **relational database**, like PostgreSQL, MySQL, or SQLite
 - Django comes with an object-relational mapper(ORM), which maps the relational database to the world of object oriented programming
 - Instead of defining database tables in SQL, you write **Django models** in Python. Your models define database fields, which correspond to the columns in their database tables
