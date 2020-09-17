@@ -4,6 +4,9 @@
 3. [Database and Model Setup](#database-and-model-setup)
 4. [Serializers](#serializers)
 5. [RESTful Structure](#restful-structure)
+6. [Routes](#routes)
+7. [Browsable API](#browsable-api)
+8. [Testing](#testing)
 
 ## Django Project Setup
 1. Create and activate a virtualenv
@@ -251,6 +254,10 @@ def get_post_puppies(request):
         url(r'^admin/', admin.site.urls),
     ]
     ```
+
+## Browsable API
+_Generate human-friendly HTML output for each resource_
+- Allows for easy browsing of resources, as well as forms for submitting data to the resources using POST, PUT, and DELETE 
 
 ## Testing
 - Creating a new file, `django-puppy-store/puppy_store/puppies/tests/test_views.py` to hold all the tests for the views
