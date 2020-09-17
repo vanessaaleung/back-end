@@ -1,7 +1,7 @@
 # Test Driven Development of a Django RESTful API
-1. Django Project Setup
-2. Django App and REST Framework Setup
-3. Database and Model Setup
+1. [Django Project Setup](#django-project-setup)
+2. [Django App and REST Framework Setup](#django-app-and-rest-framework-setup)
+3. [Database and Model Setup](#database-and-model-setup)
 
 ## Django Project Setup
 1. Create and activate a virtualenv
@@ -80,13 +80,76 @@ INSTALLED_APPS = [
 ```
 
 ## Database and Model Setup
+1. Use SQLite database, which is included in macOS and Mac OS X by default
+2. Define a puppy model with some basic attributes in `django-puppy-store/puppy_store/puppies/models.py`:
+```python
+from django.db import models
 
 
+class Puppy(models.Model):
+    """
+    Puppy Model
+    Defines the attributes of a puppy
+    """
+    name = models.CharField(max_length=255)
+    age = models.IntegerField()
+    breed = models.CharField(max_length=255)
+    color = models.CharField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def get_breed(self):
+        return self.name + ' belongs to ' + self.breed + ' breed.'
+
+    def __repr__(self):
+        return self.name + ' is added.'
+```
+
+3. Apply the migration
+```shell
+python3.7 manage.py makemigrations
+python3.7 manage.py migrate
+```
+
+## Sanity Check
+- Verify that the puppies_puppy has been created
+    - connect to the database
+    ```shell
+    sqlite3 db.sqlite3
+    ```
+    - check all existing tables
+    ```sqlite
+    .tables
+    ```
+    -  `CONTROL + D` to exit sqlite
+
+- Write a quick unit test for the Puppy model
+    - Create new file called `test_models.py` in a new folder called `tests` within `django-puppy-store/puppy_store/puppies`
+        ```python
+        from django.test import TestCase
+        from ..models import Puppy
 
 
+        class PuppyTest(TestCase):
+            """ Test module for Puppy model """
 
+            def setUp(self):
+                Puppy.objects.create(
+                    name='Casper', age=3, breed='Bull Dog', color='Black')
+                Puppy.objects.create(
+                    name='Muffin', age=1, breed='Gradane', color='Brown')
 
-
-
-
-
+            def test_puppy_breed(self):
+                puppy_casper = Puppy.objects.get(name='Casper')
+                puppy_muffin = Puppy.objects.get(name='Muffin')
+                self.assertEqual(
+                    puppy_casper.get_breed(), "Casper belongs to Bull Dog breed.")
+                self.assertEqual(
+                    puppy_muffin.get_breed(), "Muffin belongs to Gradane breed.")
+        ```
+    - Remove the tests.py file from `django-puppy-store/puppy_store/puppies`
+    - Add an `__init__.py` file to `tests`
+    - Run the test
+        ```shell
+        python3.7 manage.py test
+        ```
