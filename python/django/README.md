@@ -11,6 +11,13 @@ _An empty file that tells Python that this directory should be considered as a P
 _A “table of contents” of your Django-powered site_
 - The URL declarations for this Django project
 
+## Database
+- Django is designed to work with a **relational database**, like PostgreSQL, MySQL, or SQLite
+- Django comes with an object-relational mapper(ORM), which maps the relational database to the world of object oriented programming
+- Instead of defining database tables in SQL, you write **Django models** in Python. Your models define database fields, which correspond to the columns in their database tables
+- <img src="https://files.realpython.com/media/model_to_schema.4e4b8506dc26.png" height="300px">
+- Creating the database tables to store your Django models is the job of a database migration
+
 ## `makemigrations`
 _Create migrations for changes_
 
