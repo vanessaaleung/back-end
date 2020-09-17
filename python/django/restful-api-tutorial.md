@@ -224,34 +224,31 @@ def get_post_puppies(request):
 ### Create URLs
 - Create the respective URLs to match the views in `django-puppy-store/puppy_store/puppies/urls.py`:
     ```python
-    from django.conf.urls import url
-    from . import views
+    from django.contrib import admin
+    from django.urls import path
+    from django.conf.urls import include, re_path
 
     urlpatterns = [
-        url(
-            r'^api/v1/puppies/(?P<pk>[0-9]+)$',
-            views.get_delete_update_puppy,
-            name='get_delete_update_puppy'
-        ),
-        url(
-            r'^api/v1/puppies/$',
-            views.get_post_puppies,
-            name='get_post_puppies'
-        )
+        path('admin/', admin.site.urls),
+        re_path(r'^', include('puppies.urls')),
+        re_path(r'^api-auth/',
+                include('rest_framework.urls', namespace='rest_framework'))
     ]
     ```
 - Update `django-puppy-store/puppy_store/puppy_store/urls.py`
     ```python
-    from django.conf.urls import include, url
-    from django.contrib import admin
+    # Create the respective URLs to match the views
+    from django.urls import re_path
+    from . import views
 
+    # re_path(route, view, name)
     urlpatterns = [
-        url(r'^', include('puppies.urls')),
-        url(
-            r'^api-auth/',
-            include('rest_framework.urls', namespace='rest_framework')
-        ),
-        url(r'^admin/', admin.site.urls),
+        re_path(
+            r'^api/v1/puppies/(?P<pk>[0-9]+)$',
+            views.get_delete_update_puppy,
+            name='get_delete_update_puppy'),
+        re_path(
+            r'^api/v1/puppies/$', views.get_post_puppies, name='get_post_puppies')
     ]
     ```
 
