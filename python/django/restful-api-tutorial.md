@@ -2,6 +2,8 @@
 1. [Django Project Setup](#django-project-setup)
 2. [Django App and REST Framework Setup](#django-app-and-rest-framework-setup)
 3. [Database and Model Setup](#database-and-model-setup)
+4. [Serializers](#serializers)
+5. [RESTful Structure](#restful-structure)
 
 ## Django Project Setup
 1. Create and activate a virtualenv
@@ -153,3 +155,27 @@ python3.7 manage.py migrate
         ```shell
         python3.7 manage.py test
         ```
+
+## Serializers
+_Validates the model querysets and produces Pythonic data types to work with_
+
+- Create a file `django-puppy-store/puppy_store/puppies/serializers.py`
+```python
+from .models import Puppy
+
+class PuppySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Puppy
+        fields = ('name', 'age', 'breed', 'color', 'created_at', 'updated_at')
+```
+
+## RESTful Structure
+- In a RESTful API, endpoints (URLs) define the structure of the API and how end users access data from our application using the HTTP methods - GET, POST, PUT, DELETE. 
+
+|Endpoint|HTTP Method|CRUD Method|Result|
+|---|---|---|---|
+|puppies|GET|READ|Get all puppies|
+|puppies/:id|GET|READ|Get a single puppy|
+|puppies|POST|CREATE|Add a single puppy|
+|puppies/:id|PUT|UPDATE|Update a single puppy|
+|puppies/:id|DELETE|DELETE|Delete a single puppy|
