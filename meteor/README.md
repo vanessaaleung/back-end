@@ -64,6 +64,12 @@ import { TasksCollection } from '/imports/api/TasksCollection';
 
 const tasks = useTracker(() => TasksCollection.find({}).fetch());
 ```
+
+### Connect to MongoDB
+```shell
+meteor mongo
+```
+
 ## Add Packages
 ```shell
 meteor add react-meteor-data
