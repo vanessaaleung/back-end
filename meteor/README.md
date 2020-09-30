@@ -68,3 +68,12 @@ const tasks = useTracker(() => TasksCollection.find({}).fetch());
 ```shell
 meteor add react-meteor-data
 ```
+
+## Authentication
+- Enable username and password authentication
+```shell
+meteor add accounts-password
+
+meteor npm install --save bcrypt
+```
+- Should always use `meteor npm` instead of only `npm`, help avoid problems ude to different versions of npm installing different modules
