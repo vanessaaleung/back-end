@@ -32,3 +32,39 @@ A place to store API-related code, like publications and methods
 <meta name="mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 ```
+
+## Database
+### Create a Collection in MongoDB
+```jsx
+import { Mongo } from 'meteor/mongo';
+ 
+export const TasksCollection = new Mongo.Collection('tasks');
+```
+### Initialize a Collection
+```jsx
+import { TasksCollection } from '/imports/api/TasksCollection';
+
+const insertTask = taskText =>
+  TasksCollection.insert({ text: taskText });
+
+Meteor.startup(() => {
+  // If the Tasks collection is empty, add some data.
+  if (TasksCollection.find().count() === 0) {
+    [
+      'First Task',
+      'Second Task'
+    ].forEach(insertTask)
+  }
+});
+```
+### Render a Collection
+```jsx
+import { useTracker } from 'meteor/react-meteor-data';
+import { TasksCollection } from '/imports/api/TasksCollection';
+
+const tasks = useTracker(() => TasksCollection.find({}).fetch());
+```
+## Add Packages
+```shell
+meteor add react-meteor-data
+```
