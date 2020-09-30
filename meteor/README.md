@@ -77,3 +77,15 @@ meteor add accounts-password
 meteor npm install --save bcrypt
 ```
 - Should always use `meteor npm` instead of only `npm`, help avoid problems ude to different versions of npm installing different modules
+
+- Create a default user
+```jsx
+Meteor.startup(() => {
+  // Create a default user 
+  if (!Accounts.findUserByUsername(SEED_USERNAME))  {
+    Accounts.createUser({
+      username: SEED_USERNAME,
+      password: SEED_PASSWORD,
+    })
+  }
+```
