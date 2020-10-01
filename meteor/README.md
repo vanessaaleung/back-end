@@ -95,3 +95,7 @@ Meteor.startup(() => {
     })
   }
 ```
+
+## Publications
+- `Meteor.publish`: allows data to be published from server to client
+- `Meteor.subscribe`: allows client code to ask for data to client
