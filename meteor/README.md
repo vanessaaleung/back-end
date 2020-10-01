@@ -111,3 +111,25 @@ TEST_WATCH=1 meteor test --driver-package meteortesting:mocha
 ```
 
 <img src="test.png" height="100px">
+
+
+## Deploy
+1. Create account on Galaxy: www.meteor.com/sign-up
+2. Set up MongoDB on https://www.mongodb.com/cloud/atlas
+3. Create the database and collections and et up network access
+4. Copy the MongoDB Atlas URL like this `mongodb+srv://youruser:youserpassword@yourname.sdge2.mongodb.net/yourdb`
+5. Create a folder called `private` in root directory and create a file called `settings.json` inside
+```json
+{
+  "galaxy.meteor.com": {
+    "env": {
+      "MONGO_URL": "Your MongoDB URL"
+    }
+  }
+}
+```
+6. Run `meteor npm install` to make sure all dependencies are installed
+7. Deploy
+```shell
+meteor deploy YOUR_SUB_DOMAIN.meteorapp.com --settings private/settings.json
+```
