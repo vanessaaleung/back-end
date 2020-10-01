@@ -99,3 +99,13 @@ Meteor.startup(() => {
 ## Publications
 - `Meteor.publish`: allows data to be published from server to client
 - `Meteor.subscribe`: allows client code to ask for data to client
+
+## Testing
+```shell
+meteor add meteortesting:mocha
+meteor npm install --save-dev chai
+```
+
+```shell
+TEST_WATCH=1 meteor test --driver-package meteortesting:mocha
+```
