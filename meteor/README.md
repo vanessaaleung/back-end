@@ -109,3 +109,5 @@ meteor npm install --save-dev chai
 ```shell
 TEST_WATCH=1 meteor test --driver-package meteortesting:mocha
 ```
+
+<img src="test.png" height="100px">
