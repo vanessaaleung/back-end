@@ -96,6 +96,25 @@ Meteor.startup(() => {
   }
 ```
 
+## Router
+```shhell
+meteor add iron:router
+```
+- Create a route
+```js
+Router.route('/', function () {
+  this.render('Home'); // render the template called Home
+});
+```
+- Server side route
+```js
+Router.route('/item', function () {
+  var req = this.request;
+  var res = this.response;
+  res.end('hello from the server\n');
+}, {where: 'server'});   // tells the Router thihs is a server side route
+```
+
 ## Publications
 - `Meteor.publish`: allows data to be published from server to client
 - `Meteor.subscribe`: allows client code to ask for data to client
