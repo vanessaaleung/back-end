@@ -141,6 +141,7 @@ Router.route('/item', function () {
 ```shell
 meteor add ryw:blog
 ````
+- Go to `http://localhost:3000/admin/blog` to edit blogs
 
 ## Publications
 - `Meteor.publish`: allows data to be published from server to client
