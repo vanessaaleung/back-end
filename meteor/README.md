@@ -97,7 +97,8 @@ Meteor.startup(() => {
 ```
 
 ## Router
-```shhell
+_Route between site URLs and HTML content on both the client and the server_
+```shell
 meteor add iron:router
 ```
 - Create a route
