@@ -1,4 +1,11 @@
 # Meteor
+- [Setup](#setup)
+- [Database](#database)
+- [Router](#router)
+- [Authentication](#authentication)
+- [Deployment](#deployment)
+- [Add Packages](#add-packages)
+- [Testing](#testing)
 
 ## Setup
 ### Installation
@@ -114,6 +121,19 @@ Router.route('/item', function () {
   var res = this.response;
   res.end('hello from the server\n');
 }, {where: 'server'});   // tells the Router thihs is a server side route
+```
+
+- Create a html file as a template
+
+```html
+<template name="news">
+  ...
+</template>
+```
+
+- Add the page link in the navbar
+```html
+<a href="news">News</a>
 ```
 
 ## Publications
