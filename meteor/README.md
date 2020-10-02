@@ -3,6 +3,7 @@
 - [Database](#database)
 - [Router](#router)
 - [Authentication](#authentication)
+- [Blog](#blog)
 - [Deployment](#deployment)
 - [Add Packages](#add-packages)
 - [Testing](#testing)
@@ -135,6 +136,11 @@ Router.route('/item', function () {
 ```html
 <a href="news">News</a>
 ```
+
+## Blog
+```shell
+meteor add ryw:blog
+````
 
 ## Publications
 - `Meteor.publish`: allows data to be published from server to client
